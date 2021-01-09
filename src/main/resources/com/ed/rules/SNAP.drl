@@ -1,0 +1,29 @@
+package com.ed.rules;
+
+import com.ed.rules.api.domain.EDIndivInfoBinding;
+import com.ed.rules.api.domain.EdPlanInfoBinding;
+
+rule "Snap Plan Rules For AP"
+
+	when
+		indvInfo: EDIndivInfoBinding(isEmployed=='N')
+	then
+		EdPlanInfoBinding planInfo = new EdPlanInfoBinding();
+		planInfo.setPlanName("SNAP");
+		planInfo.setPlanStatus("AP");
+		planInfo.setPlanStartDate("10-04-2020");
+		planInfo.setPlanEndDate("12-04-2020");
+		planInfo.setBenefitAmt("$300.00");
+		indvInfo.setPlanInfo(planInfo);
+	end
+
+rule "Snap Plan Rules For DN"
+	when
+		indvInfo: EDIndivInfoBinding(isEmployed=='y')
+	then
+		EdPlanInfoBinding planInfo = new EdPlanInfoBinding();
+		planInfo.setPlanName("SNAP");
+		planInfo.setPlanStatus("DN");
+		planInfo.setDenialReason("High Income");
+		indvInfo.setPlanInfo(planInfo);
+	end
